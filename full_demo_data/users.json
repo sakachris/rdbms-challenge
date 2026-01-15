@@ -1,0 +1,62 @@
+{
+  "rows": [
+    {
+      "row_id": 1,
+      "data": {
+        "id": 1,
+        "username": "alice",
+        "email": "alice@example.com",
+        "age": 31,
+        "country": "USA",
+        "balance": 1100.0,
+        "signup_date": "2025-01-01"
+      },
+      "created_at": "2026-01-15T10:58:59.301942",
+      "updated_at": "2026-01-15T10:58:59.310789"
+    },
+    {
+      "row_id": 3,
+      "data": {
+        "id": 3,
+        "username": "charlie",
+        "email": "charlie@example.com",
+        "age": 35,
+        "country": "USA",
+        "balance": 1500.0,
+        "signup_date": "2025-01-10"
+      },
+      "created_at": "2026-01-15T10:58:59.304462",
+      "updated_at": "2026-01-15T10:58:59.304465"
+    },
+    {
+      "row_id": 4,
+      "data": {
+        "id": 4,
+        "username": "diana",
+        "email": "diana@example.com",
+        "age": 28,
+        "country": "Canada",
+        "balance": 750.0,
+        "signup_date": "2025-01-12"
+      },
+      "created_at": "2026-01-15T10:58:59.305584",
+      "updated_at": "2026-01-15T10:58:59.305588"
+    },
+    {
+      "row_id": 5,
+      "data": {
+        "id": 5,
+        "username": "eve",
+        "email": "eve@example.com",
+        "age": 32,
+        "country": "USA",
+        "balance": 2000.0,
+        "signup_date": "2025-01-14"
+      },
+      "created_at": "2026-01-15T10:58:59.306694",
+      "updated_at": "2026-01-15T10:58:59.306696"
+    }
+  ],
+  "next_id": 6,
+  "metadata": {}
+}

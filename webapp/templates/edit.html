@@ -1,0 +1,72 @@
+<!-- edit.html - Edit Post -->
+{% extends "base.html" %} {% block title %}Edit Post - SimplDB Blog{% endblock
+%} {% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <h1 class="mb-4"><i class="bi bi-pencil"></i> Edit Post</h1>
+
+    <div class="card">
+      <div class="card-body">
+        <form
+          action="{{ url_for('edit_post', post_id=post.id) }}"
+          method="POST"
+        >
+          <div class="mb-3">
+            <label for="title" class="form-label">Title *</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              name="title"
+              value="{{ post.title }}"
+              required
+              maxlength="200"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="content" class="form-label">Content *</label>
+            <textarea
+              class="form-control"
+              id="content"
+              name="content"
+              rows="10"
+              required
+            >
+{{ post.content }}</textarea
+            >
+          </div>
+
+          <div class="mb-3 form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="published"
+              name="published"
+              {%
+              if
+              post.published
+              %}checked{%
+              endif
+              %}
+            />
+            <label class="form-check-label" for="published"> Published </label>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check-circle"></i> Update Post
+            </button>
+            <a
+              href="{{ url_for('view_post', post_id=post.id) }}"
+              class="btn btn-secondary"
+            >
+              <i class="bi bi-x-circle"></i> Cancel
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

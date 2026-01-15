@@ -1,0 +1,62 @@
+{
+  "rows": [
+    {
+      "row_id": 1,
+      "data": {
+        "id": 1,
+        "title": "Welcome to SimplDB Blog",
+        "content": "This is our first blog post using SimplDB, a custom-built relational database!",
+        "author_id": 1,
+        "published": true,
+        "created_at": "2025-01-10",
+        "updated_at": "2025-01-10"
+      },
+      "created_at": "2026-01-16T01:14:16.994100",
+      "updated_at": "2026-01-16T01:14:16.994115"
+    },
+    {
+      "row_id": 2,
+      "data": {
+        "id": 2,
+        "title": "Building Your Own Database",
+        "content": "Learn how to build a simple RDBMS from scratch using Python.",
+        "author_id": 1,
+        "published": true,
+        "created_at": "2025-01-11",
+        "updated_at": "2025-01-11"
+      },
+      "created_at": "2026-01-16T01:14:16.996694",
+      "updated_at": "2026-01-16T01:14:16.996702"
+    },
+    {
+      "row_id": 3,
+      "data": {
+        "id": 4,
+        "title": "Draft Post",
+        "content": "This post is not yet published.",
+        "author_id": 2,
+        "published": false,
+        "created_at": "2026-01-16",
+        "updated_at": "2026-01-16"
+      },
+      "created_at": "2026-01-16T01:14:16.999968",
+      "updated_at": "2026-01-16T01:14:16.999979"
+    },
+    {
+      "row_id": 4,
+      "data": {
+        "id": 5,
+        "title": "victory",
+        "content": "Here we are again",
+        "author_id": 1,
+        "published": true,
+        "created_at": "2026-01-16",
+        "updated_at": "2026-01-16"
+      },
+      "created_at": "2026-01-16T01:17:08.924351",
+      "updated_at": "2026-01-16T01:19:36.650412"
+    }
+  ],
+  "next_id": 5,
+  "metadata": {}
+}

@@ -1,0 +1,47 @@
+<!-- author.html - Author Posts -->
+{% extends "base.html" %} {% block title %}Posts by {{ author.full_name }} -
+SimplDB Blog{% endblock %} {% block content %}
+<h1 class="mb-4">
+  <i class="bi bi-person-circle"></i> Posts by {{ author.full_name }}
+</h1>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <p><strong>Username:</strong> @{{ author.username }}</p>
+    <p><strong>Email:</strong> {{ author.email }}</p>
+    <p class="mb-0"><strong>Member since:</strong> {{ author.created_at }}</p>
+  </div>
+</div>
+
+{% if posts %} {% for post in posts %}
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title">
+      <a
+        href="{{ url_for('view_post', post_id=post.id) }}"
+        class="text-decoration-none text-dark"
+      >
+        {{ post.title }}
+      </a>
+    </h2>
+    <p class="post-meta">
+      <i class="bi bi-calendar"></i> {{ post.created_at }}
+    </p>
+    <p class="card-text">{{ post.content }}</p>
+    <a
+      href="{{ url_for('view_post', post_id=post.id) }}"
+      class="btn btn-primary btn-sm"
+      >Read more</a
+    >
+  </div>
+</div>
+{% endfor %} {% else %}
+<div class="alert alert-info">
+  <i class="bi bi-info-circle"></i> This author hasn't published any posts yet.
+</div>
+{% endif %}
+
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">
+  <i class="bi bi-arrow-left"></i> Back to Home
+</a>
+{% endblock %}

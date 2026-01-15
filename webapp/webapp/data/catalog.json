@@ -1,0 +1,207 @@
+{
+  "version": "0.1.0",
+  "created_at": "2026-01-16T01:14:16.956368",
+  "tables": {
+    "users": {
+      "created_at": "2026-01-16T01:14:16.968251",
+      "schema": {
+        "table_name": "users",
+        "columns": [
+          {
+            "name": "id",
+            "data_type": "INTEGER",
+            "max_length": null,
+            "constraints": [
+              "PRIMARY_KEY",
+              "NOT_NULL"
+            ],
+            "default": null
+          },
+          {
+            "name": "username",
+            "data_type": "VARCHAR",
+            "max_length": 50,
+            "constraints": [
+              "UNIQUE",
+              "NOT_NULL"
+            ],
+            "default": null
+          },
+          {
+            "name": "email",
+            "data_type": "VARCHAR",
+            "max_length": 100,
+            "constraints": [
+              "UNIQUE",
+              "NOT_NULL"
+            ],
+            "default": null
+          },
+          {
+            "name": "full_name",
+            "data_type": "VARCHAR",
+            "max_length": 100,
+            "constraints": [],
+            "default": null
+          },
+          {
+            "name": "created_at",
+            "data_type": "DATE",
+            "max_length": null,
+            "constraints": [],
+            "default": null
+          }
+        ]
+      },
+      "row_count": 3,
+      "last_modified": "2026-01-16T01:14:16.992529"
+    },
+    "posts": {
+      "created_at": "2026-01-16T01:14:16.970325",
+      "schema": {
+        "table_name": "posts",
+        "columns": [
+          {
+            "name": "id",
+            "data_type": "INTEGER",
+            "max_length": null,
+            "constraints": [
+              "PRIMARY_KEY",
+              "NOT_NULL"
+            ],
+            "default": null
+          },
+          {
+            "name": "title",
+            "data_type": "VARCHAR",
+            "max_length": 200,
+            "constraints": [
+              "NOT_NULL"
+            ],
+            "default": null
+          },
+          {
+            "name": "content",
+            "data_type": "TEXT",
+            "max_length": null,
+            "constraints": [
+              "NOT_NULL"
+            ],
+            "default": null
+          },
+          {
+            "name": "author_id",
+            "data_type": "INTEGER",
+            "max_length": null,
+            "constraints": [
+              "NOT_NULL"
+            ],
+            "default": null
+          },
+          {
+            "name": "published",
+            "data_type": "BOOLEAN",
+            "max_length": null,
+            "constraints": [],
+            "default": false
+          },
+          {
+            "name": "created_at",
+            "data_type": "DATE",
+            "max_length": null,
+            "constraints": [],
+            "default": null
+          },
+          {
+            "name": "updated_at",
+            "data_type": "DATE",
+            "max_length": null,
+            "constraints": [],
+            "default": null
+          }
+        ]
+      },
+      "row_count": 4,
+      "last_modified": "2026-01-16T01:19:36.662422"
+    },
+    "comments": {
+      "created_at": "2026-01-16T01:14:16.972041",
+      "schema": {
+        "table_name": "comments",
+        "columns": [
+          {
+            "name": "id",
+            "data_type": "INTEGER",
+            "max_length": null,
+            "constraints": [
+              "PRIMARY_KEY",
+              "NOT_NULL"
+            ],
+            "default": null
+          },
+          {
+            "name": "post_id",
+            "data_type": "INTEGER",
+            "max_length": null,
+            "constraints": [
+              "NOT_NULL"
+            ],
+            "default": null
+          },
+          {
+            "name": "user_id",
+            "data_type": "INTEGER",
+            "max_length": null,
+            "constraints": [
+              "NOT_NULL"
+            ],
+            "default": null
+          },
+          {
+            "name": "content",
+            "data_type": "TEXT",
+            "max_length": null,
+            "constraints": [
+              "NOT_NULL"
+            ],
+            "default": null
+          },
+          {
+            "name": "created_at",
+            "data_type": "DATE",
+            "max_length": null,
+            "constraints": [],
+            "default": null
+          }
+        ]
+      },
+      "row_count": 3,
+      "last_modified": "2026-01-16T01:14:17.010187"
+    }
+  },
+  "indexes": {
+    "posts.author_id": {
+      "name": "idx_post_author",
+      "table": "posts",
+      "column": "author_id",
+      "unique": false,
+      "created_at": "2026-01-16T01:14:16.974832"
+    },
+    "comments.post_id": {
+      "name": "idx_comment_post",
+      "table": "comments",
+      "column": "post_id",
+      "unique": false,
+      "created_at": "2026-01-16T01:14:16.977066"
+    },
+    "comments.user_id": {
+      "name": "idx_comment_user",
+      "table": "comments",
+      "column": "user_id",
+      "unique": false,
+      "created_at": "2026-01-16T01:14:16.979702"
+    }
+  },
+  "statistics": {},
+  "metadata": {}
+}

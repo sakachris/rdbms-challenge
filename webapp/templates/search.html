@@ -1,0 +1,45 @@
+<!-- search.html - Search Results -->
+{% extends "base.html" %} {% block title %}Search: {{ query }} - SimplDB Blog{%
+endblock %} {% block content %}
+<h1 class="mb-4">
+  <i class="bi bi-search"></i> Search Results for "{{ query }}"
+</h1>
+
+{% if posts %}
+<p class="text-muted">
+  Found {{ posts|length }} post{{ 's' if posts|length != 1 else '' }}
+</p>
+
+{% for post in posts %}
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title">
+      <a
+        href="{{ url_for('view_post', post_id=post.id) }}"
+        class="text-decoration-none text-dark"
+      >
+        {{ post.title }}
+      </a>
+    </h2>
+    <p class="post-meta">
+      <i class="bi bi-person"></i> {{ post.author_name }} &nbsp;|&nbsp;
+      <i class="bi bi-calendar"></i> {{ post.created_at }}
+    </p>
+    <p class="card-text">{{ post.content }}</p>
+    <a
+      href="{{ url_for('view_post', post_id=post.id) }}"
+      class="btn btn-primary btn-sm"
+      >Read more</a
+    >
+  </div>
+</div>
+{% endfor %} {% else %}
+<div class="alert alert-warning">
+  <i class="bi bi-exclamation-triangle"></i> No posts found for "{{ query }}"
+</div>
+{% endif %}
+
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">
+  <i class="bi bi-arrow-left"></i> Back to Home
+</a>
+{% endblock %}
