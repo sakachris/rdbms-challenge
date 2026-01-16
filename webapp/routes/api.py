@@ -1,6 +1,6 @@
 """API routes"""
 from flask import jsonify
-from models import Post, User
+from webapp.models import Post, User
 
 
 def register_api_routes(app, db):

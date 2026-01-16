@@ -1,6 +1,6 @@
 """Post-related routes"""
 from flask import render_template, request, redirect, url_for, flash
-from models import Post, User, Comment
+from webapp.models import Post, User, Comment
 
 
 def register_post_routes(app, db):

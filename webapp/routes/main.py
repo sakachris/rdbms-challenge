@@ -1,6 +1,6 @@
 """Main application routes"""
 from flask import render_template, request, redirect, url_for, flash
-from models import Post, User
+from webapp.models import Post, User
 
 
 def register_main_routes(app, db):
