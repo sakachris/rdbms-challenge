@@ -1,0 +1,91 @@
+name: Build, Push, Restart Deployment and Notify
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push image
+        id: docker-build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            sakachris/simpldb:latest
+            sakachris/simpldb:${{ github.sha }}
+
+      # - name: Set up kubectl
+      #   if: success()
+      #   run: |
+      #     echo "${{ secrets.KUBECONFIG_DATA }}" | base64 --decode > kubeconfig
+      #     export KUBECONFIG=$PWD/kubeconfig
+      #     kubectl get nodes
+
+      # - name: Update image tag in K8s
+      #   if: success()
+      #   run: |
+      #     export KUBECONFIG=$PWD/kubeconfig
+      #     kubectl set image deployment/simpldb \
+      #       simpldb=sakachris/simpldb:${{ github.sha }} \
+      #       -n simpldb
+
+      # - name: Restart deployments
+      #   if: success()
+      #   run: |
+      #     export KUBECONFIG=$PWD/kubeconfig
+      #     kubectl rollout restart deployment simpldb -n simpldb
+
+      # # SUCCESS EMAIL
+      # - name: Send success email
+      #   if: success()
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: smtp.gmail.com
+      #     server_port: 465
+      #     username: ${{ secrets.EMAIL_USERNAME }}
+      #     password: ${{ secrets.EMAIL_PASSWORD }}
+      #     subject: "✅ SimplDB Deployment Successful"
+      #     to: ${{ secrets.NOTIFY_EMAIL }}
+      #     from: "Deployment Bot <${{ secrets.EMAIL_USERNAME }}>"
+      #     secure: true
+      #     body: |
+      #       The deployment for simplDB was successful.
+      #       Docker tags:
+      #         latest
+      #         ${{ github.sha }}
+      #       Deployments restarted: simpldb
+      #       Commit: ${{ github.sha }}
+      #       Timestamp: ${{ github.event.head_commit.timestamp }}
+
+      # # FAILURE EMAIL
+      # - name: Send failure email
+      #   if: failure()
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: smtp.gmail.com
+      #     server_port: 465
+      #     username: ${{ secrets.EMAIL_USERNAME }}
+      #     password: ${{ secrets.EMAIL_PASSWORD }}
+      #     subject: "❌ SimplDB Deployment Failed"
+      #     to: ${{ secrets.NOTIFY_EMAIL }}
+      #     from: "Deployment Bot <${{ secrets.EMAIL_USERNAME }}>"
+      #     secure: true
+      #     body: |
+      #       The deployment for simplDB has failed.
+      #       Please check the GitHub Actions logs for details:
+      #       ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      #       Commit: ${{ github.sha }}
+      #       Timestamp: ${{ github.event.head_commit.timestamp }}
