@@ -1,0 +1,13 @@
+[tool.ruff]
+line-length = 79
+fix = true
+target-version = "py310"
+
+select = ["E", "F", "W", "I"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
