@@ -188,8 +188,11 @@ class SQLParser:
                 r"CREATE\s+(UNIQUE\s+)?INDEX\s+(\w+)\s+ON\s+(\w+)\s*\((\w+)\)"
             ),
             QueryType.DROP_INDEX: r"DROP\s+INDEX\s+(\w+)\s+ON\s+(\w+)",
+            # QueryType.INSERT: (
+            #     r"INSERT\s+INTO\s+(\w+)\s*\((.*?)\)\s+VALUES\s*\((.*?)\)"
+            # ),
             QueryType.INSERT: (
-                r"INSERT\s+INTO\s+(\w+)\s*\((.*?)\)\s+VALUES\s*\((.*?)\)"
+                r"INSERT\s+INTO\s+(\w+)\s*\((.*?)\)\s+VALUES\s*(.+)$"
             ),
             QueryType.SELECT: r"SELECT\s+(.*?)\s+FROM\s+(\w+)(.*)",
             QueryType.UPDATE: (
@@ -387,7 +390,10 @@ class SQLParser:
 
         table_name = match.group(1)
         columns_str = match.group(2)
-        values_str = match.group(3)
+        # values_str = match.group(3)
+
+        values_block = match.group(3)
+        values_str = self._extract_parenthesized(values_block)
 
         columns = [col.strip() for col in columns_str.split(",")]
         values = [
@@ -512,15 +518,26 @@ class SQLParser:
         set_clause = match.group(2)
         where_clause = match.group(3)
 
-        # Parse SET clause
         updates = {}
-        for assignment in set_clause.split(","):
-            parts = assignment.strip().split("=")
-            if len(parts) != 2:
+        for assignment in self._split_assignments(set_clause):
+            if "=" not in assignment:
                 raise ValueError(f"Invalid SET clause: {assignment}")
-            column = parts[0].strip()
-            value = self._parse_value(parts[1].strip())
+
+            column, value_str = assignment.split("=", 1)
+            column = column.strip()
+            value = self._parse_value(value_str.strip())
+
             updates[column] = value
+
+        # # Parse SET clause
+        # updates = {}
+        # for assignment in set_clause.split(","):
+        #     parts = assignment.strip().split("=")
+        #     if len(parts) != 2:
+        #         raise ValueError(f"Invalid SET clause: {assignment}")
+        #     column = parts[0].strip()
+        #     value = self._parse_value(parts[1].strip())
+        #     updates[column] = value
 
         # Parse WHERE clause
         where = None
@@ -721,6 +738,73 @@ class SQLParser:
             values.append("".join(current).strip())
 
         return values
+
+    def _split_assignments(self, assignments_str: str) -> List[str]:
+        """
+        Split SET assignments safely, respecting quoted strings.
+        Example:
+        content = 'Hello, world', title = 'Test'
+        """
+        assignments = []
+        current = []
+        in_quote = False
+        quote_char = None
+
+        for char in assignments_str:
+            if char in ("'", '"') and not in_quote:
+                in_quote = True
+                quote_char = char
+                current.append(char)
+            elif char == quote_char and in_quote:
+                in_quote = False
+                quote_char = None
+                current.append(char)
+            elif char == "," and not in_quote:
+                assignments.append("".join(current).strip())
+                current = []
+            else:
+                current.append(char)
+
+        if current:
+            assignments.append("".join(current).strip())
+
+        return assignments
+
+    def _extract_parenthesized(self, text: str) -> str:
+        """
+        Extract content inside the first top-level (...) pair,
+        respecting quoted strings.
+        """
+        text = text.strip()
+        if not text.startswith("("):
+            raise ValueError("Expected '(' at start of VALUES")
+
+        depth = 0
+        in_quote = False
+        quote_char = None
+        content = []
+
+        for i, char in enumerate(text):
+            if char in ("'", '"') and not in_quote:
+                in_quote = True
+                quote_char = char
+            elif char == quote_char and in_quote:
+                in_quote = False
+                quote_char = None
+
+            if char == "(" and not in_quote:
+                depth += 1
+                if depth == 1:
+                    continue
+            elif char == ")" and not in_quote:
+                depth -= 1
+                if depth == 0:
+                    return "".join(content)
+
+            if depth >= 1:
+                content.append(char)
+
+        raise ValueError("Unbalanced parentheses in VALUES clause")
 
 
 if __name__ == "__main__":
