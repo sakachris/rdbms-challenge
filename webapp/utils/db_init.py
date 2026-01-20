@@ -4,13 +4,32 @@ from webapp.utils.sample_data import insert_sample_data
 
 
 def init_database(db):
-    """Initialize database schema"""
+    """Initialize database schema and seed data"""
+
     if "users" not in db.list_tables():
         create_schema(db)
         insert_sample_data(db)
-        print("✓ Database schema created")
+        print("✓ Database schema created and sample data inserted")
+        return
+
+    # Tables exist — check if they contain data
+    users_table = db.storage.get_table("users")
+
+    if users_table.count() == 0:
+        insert_sample_data(db)
+        print("✓ Sample data reinserted")
     else:
         print("✓ Database already initialized")
+
+
+# def init_database(db):
+#     """Initialize database schema"""
+#     if "users" not in db.list_tables():
+#         create_schema(db)
+#         insert_sample_data(db)
+#         print("✓ Database schema created")
+#     else:
+#         print("✓ Database already initialized")
 
 
 def create_schema(db):

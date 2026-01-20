@@ -5,7 +5,7 @@ block content %}
     <h1 class="mb-4"><i class="bi bi-journal-text"></i> Recent Posts</h1>
 
     {% if posts %} {% for post in posts %}
-    <div class="card">
+    <div class="card mb-4">
       <div class="card-body">
         <h2 class="card-title">
           <a
@@ -15,7 +15,8 @@ block content %}
             {{ post.title }}
           </a>
         </h2>
-        <p class="post-meta">
+
+        <p class="post-meta text-muted small">
           <i class="bi bi-person"></i>
           <a
             href="{{ url_for('author_posts', username=post.author_username) }}"
@@ -25,10 +26,13 @@ block content %}
           </a>
           &nbsp;|&nbsp;
           <i class="bi bi-calendar"></i> {{ post.created_at }} &nbsp;|&nbsp;
-          <i class="bi bi-chat"></i> {{ post.comment_count }} comment{{ 's' if
-          post.comment_count != 1 else '' }}
+          <i class="bi bi-chat"></i>
+          {{ post.comment_count }} comment{{ 's' if post.comment_count != 1 else
+          '' }}
         </p>
+
         <p class="card-text">{{ post.content }}</p>
+
         <a
           href="{{ url_for('view_post', post_id=post.id) }}"
           class="btn btn-primary btn-sm"
@@ -37,12 +41,55 @@ block content %}
         </a>
       </div>
     </div>
-    {% endfor %} {% else %}
+    {% endfor %} {% if pagination.total_pages > 1 %}
+    <nav aria-label="Post pagination" class="mt-4">
+      <ul class="pagination justify-content-center">
+        <li
+          class="page-item {% if not pagination.has_prev %}disabled{% endif %}"
+        >
+          <a
+            class="page-link"
+            href="{% if pagination.has_prev %}{{ url_for('index', page=pagination.prev_page) }}{% else %}#{% endif %}"
+            aria-label="Previous"
+          >
+            &laquo;
+          </a>
+        </li>
+
+        {% for page_num in pagination.pages %}
+        <li
+          class="page-item {% if page_num == pagination.page %}active{% endif %}"
+        >
+          <a class="page-link" href="{{ url_for('index', page=page_num) }}">
+            {{ page_num }}
+          </a>
+        </li>
+        {% endfor %}
+
+        <li
+          class="page-item {% if not pagination.has_next %}disabled{% endif %}"
+        >
+          <a
+            class="page-link"
+            href="{% if pagination.has_next %}{{ url_for('index', page=pagination.next_page) }}{% else %}#{% endif %}"
+            aria-label="Next"
+          >
+            &raquo;
+          </a>
+        </li>
+      </ul>
+
+      <p class="text-center text-muted small">
+        Page {{ pagination.page }} of {{ pagination.total_pages }} ({{
+        pagination.total_posts }} posts)
+      </p>
+    </nav>
+    {% endif %} {% else %}
     <div class="alert alert-info">
       <i class="bi bi-info-circle"></i> No posts yet.
-      <a href="{{ url_for('create_post') }}" class="alert-link"
-        >Create the first post!</a
-      >
+      <a href="{{ url_for('create_post') }}" class="alert-link">
+        Create the first post!
+      </a>
     </div>
     {% endif %}
   </div>
